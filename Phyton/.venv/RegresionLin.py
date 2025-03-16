@@ -12,13 +12,14 @@ data = {
 
 df = pd.DataFrame(data)
 
-x = df[{"Study Hours"}]
-y = df[{"Final Grade"}]
+x = df[["Study Hours"]]  # Mantiene formato 2D correcto
+y = df[["Final Grade"]]  # Corregido para ser un DataFrame 2D
 
 model = LinearRegression()
-
-model.fit(x,y)
+model.fit(x, y)
 
 def calculateGrade(hours):
-    result = model.predict[{hours}][0]
+    hours_df = pd.DataFrame([[hours]], columns=["Study Hours"])  # Mantiene formato 2D correcto
+    result = model.predict(hours_df)[0][0]  # Extrae el valor escalar
     return result
+
