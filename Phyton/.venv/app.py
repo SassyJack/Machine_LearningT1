@@ -1,8 +1,14 @@
-from flask import Flask, render_template, request
 import datetime
 import re
+from flask import Flask, render_template, request
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import io
+import base64
+from sklearn.linear_model import LinearRegression
 import RegresionLin
-#hola
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -28,10 +34,11 @@ def exampleHTML():
     return render_template("example.html")
 
 @app.route("/RegresionLin/", methods=["GET", "POST"])
-def calculateGrade():
-    calculateResult = None
-    if request.method == "POST":
-        hours = float(request.form["hours"])
-        calculateResult = RegresionLin.calculateGrade(hours)
-    return render_template("RegresionLin.html", result = calculateResult)
+def index():
+    prediction = None
+    if request.method == 'POST':
+        investment = float(request.form['investment'])
+        prediction = RegresionLin.calculate_prediction(investment) 
+    plot_url = RegresionLin.generate_plot()
+    return render_template('RegresionLin.html', prediction=prediction, plot_url=plot_url)
 
