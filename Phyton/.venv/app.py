@@ -1,12 +1,6 @@
 import datetime
 import re
 from flask import Flask, render_template, request
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import io
-import base64
-from sklearn.linear_model import LinearRegression
 import RegresionLin
 
 app = Flask(__name__)
