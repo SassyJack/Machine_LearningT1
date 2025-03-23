@@ -36,3 +36,7 @@ def index():
     plot_url = RegresionLin.generate_plot()
     return render_template('RegresionLin.html', prediction=prediction, plot_url=plot_url)
 
+@app.route("/RegresionLog/")
+def RegresionLog():
+    return render_template("RegresionLog.html")
+
