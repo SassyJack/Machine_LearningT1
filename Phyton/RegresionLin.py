@@ -12,7 +12,6 @@ data = {
 
 df = pd.DataFrame(data)
 
-# Modelo de regresión lineal
 x = df[["Inversión en publicidad (USD)"]]
 y = df[["Ventas (unidades)"]]
 model = LinearRegression()
@@ -23,7 +22,6 @@ def calculate_prediction(investment):
     result = model.predict(investment_df)[0][0]
     return round(result, 2)
 
-# Generar gráfico de regresión
 def generate_plot():
     plt.figure(figsize=(6, 4))
     plt.scatter(df["Inversión en publicidad (USD)"], df["Ventas (unidades)"], color='blue', label="Datos")
