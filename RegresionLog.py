@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 import io
@@ -11,7 +13,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, confu
 
 # Generación del dataset
 np.random.seed(42)
-n_samples = 1000
+n_samples = 500
 historial_compras = np.random.randint(0, 100, n_samples)
 frecuencia = np.random.randint(1, 30, n_samples)
 gasto_promedio = np.random.uniform(5, 500, n_samples)

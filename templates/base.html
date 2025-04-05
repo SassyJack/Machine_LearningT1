@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mi Aplicación Flask{% endblock %}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+        }
+
+        header {
+            background-color: #4a90e2;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            background-color: #ffffff;
+            padding: 2rem 1rem;
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            display: block;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        nav a:hover {
+            background-color: #e6f0ff;
+        }
+
+        main {
+            margin-left: 270px;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>Machine Learning</header>
+    
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/exampleHTML/">Caso de Uso Supervisado</a>
+        <a href="/RegresionLin/">Regresión Lineal</a>
+        <a href="/RegresionLogHTML/">Regresión Logística R</a>
+        <a href="/RegresionLog/">Regresión Logística</a>
+    </nav>
+    
+    <main>  
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>
