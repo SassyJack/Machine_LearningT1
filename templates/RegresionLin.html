@@ -1,25 +1,47 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regresión Lineal - Publicidad vs Ventas</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
-        form { margin: 20px; }
-        input, button { padding: 10px; font-size: 16px; }
-        img { max-width: 80%; height: auto; margin-top: 20px; }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Regresión Lineal{% endblock %}
+
+{% block content %}
+<style>
+    .lin-container {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 30px auto;
+        max-width: 800px;
+    }
+
+    form {
+        margin: 20px;
+    }
+
+    input, button {
+        padding: 10px;
+        font-size: 16px;
+        width: 100%;
+        max-width: 300px;
+        margin: 10px 0;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="lin-container">
     <h1>Regresión Lineal: Publicidad vs. Ventas</h1>
     <p><strong>Objetivo:</strong> Analizar la relación entre la inversión en publicidad y las ventas.</p>
     <p><strong>Descripción:</strong> Se entrenó un modelo de regresión lineal con datos de inversión en publicidad (USD) y ventas (unidades).</p>
     
     <h2>Haz tu predicción</h2>
     <form method="post">
-        <label for="investment">Inversión en publicidad (USD): </label>
+        <label for="investment">Inversión en publicidad (USD): </label><br>
         <input type="number" step="0.1" id="investment" name="investment" required>
+        <br>
         <button type="submit">Predecir</button>
     </form>
 
@@ -29,5 +51,5 @@
 
     <h2>Visualización del modelo</h2>
     <img src="data:image/png;base64,{{ plot_url }}" alt="Gráfica de regresión lineal">
-</body>
-</html>
+</div>
+{% endblock %}
