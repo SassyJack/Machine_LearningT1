@@ -1,38 +1,21 @@
-import pyodbc
+from sqlalchemy import create_engine, text
 
-# Configura la cadena de conexión a SQL Server
-conn_str = (
-    "DRIVER={ODBC Driver 17 for SQL Server};"
-    "SERVER=MachineLearning.mssql.somee.com;"
-    "DATABASE=MachineLearning;"
-    "UID=SassyJack_SQLLogin_1;"
-    "PWD=8p2yantucr;"  # Reemplaza con tu contraseña real
-)
+# Formato de conexión con pytds
+DATABASE_URL = "mssql+pytds://SassyJack_SQLLogin_1:8p2yantucr@MachineLearning.mssql.somee.com/MachineLearning"
+
+engine = create_engine(DATABASE_URL)
 
 def obtener_modelos():
-    conn = pyodbc.connect(conn_str)
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, Nombre FROM dbo.Modelo")  # ← Cambio aquí
-    modelos = cursor.fetchall()
-    conn.close()
-    return [(fila.id, fila.Nombre) for fila in modelos]
+    with engine.connect() as connection:
+        result = connection.execute(text("SELECT Id, Nombre, Descripcion, FuenteInformacion, ContenidoGrafico FROM dbo.Modelo"))
+        modelos = result.mappings().all()  # Convierte filas a diccionarios
+        return modelos
 
 def obtener_modelo_por_id(modelo_id):
-    conn = pyodbc.connect(conn_str)
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT id, Nombre, Descripcion, FuenteInformacion, ContenidoGrafico FROM dbo.Modelo WHERE id = ?",
-        (modelo_id,)
-    )
-    fila = cursor.fetchone()
-    conn.close()
-    if fila:
-        return {
-            'id': fila.id,
-            'nombre': fila.Nombre,
-            'descripcion': fila.Descripcion,
-            'fuente': fila.FuenteInformacion,
-            'imagen_url': fila.ContenidoGrafico
-        }
-    return None
-
+    with engine.connect() as connection:
+        result = connection.execute(
+            text("SELECT Id, Nombre, Descripcion, FuenteInformacion, ContenidoGrafico FROM dbo.Modelo WHERE Id = :id"),
+            {"id": modelo_id}
+        )
+        modelo = result.mappings().first()  # Devuelve una sola fila como dict-like
+        return dict(modelo) if modelo else None
