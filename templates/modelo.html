@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ modelo.nombre }}{% endblock %}
+
+{% block content %}
+<h2>{{ modelo.nombre }}</h2>
+<p>{{ modelo.descripcion }}</p>
+
+<p><strong>Fuente de Información:</strong> 
+    {% if modelo.fuente %}
+        <a href="{{ modelo.fuente }}" target="_blank">{{ modelo.fuente }}</a>
+    {% else %}
+        No disponible.
+    {% endif %}
+</p>
+
+{% if modelo.imagen_url %}
+    <img src="{{ modelo.imagen_url }}" alt="Imagen del modelo" style="max-width: 500px;">
+{% else %}
+    <p>No hay imagen disponible.</p>
+{% endif %}
+{% endblock %}
