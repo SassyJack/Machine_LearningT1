@@ -80,7 +80,7 @@
         <div class="submenu">
             <h3>Modelos disponibles</h3>
             {% for modelo in modelos %}
-                <a href="/Modelos/{{ modelo[0] }}">{{ modelo[1] }}</a>
+                <a href="/Modelos/{{ modelo['Id'] }}">{{ modelo['Nombre'] }}</a>
             {% endfor %}
         </div>
         {% endif %}
