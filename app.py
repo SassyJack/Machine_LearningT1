@@ -8,10 +8,17 @@ import RegresionLog
 import Modelos
 from Modelos import obtener_modelo_por_id, obtener_modelos
 from RegresionLog import generate_plot, scaler
+from ModeloXGBoost import cargar_modelo, procesar_excel
+import os
+from werkzeug.utils import secure_filename
+from flask import send_file
 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 
 app = Flask(__name__)
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route('/')
 def index():
     modelos = obtener_modelos()
@@ -78,3 +85,39 @@ def modelo(modelo_id):
     else:
         return "Modelo no encontrado", 404
 
+
+@app.route("/PrediccionDiabetes/", methods=["GET", "POST"])
+def prediccion_diabetes():
+    datos = None
+    predicciones = None
+    if request.method == 'POST':
+        file = request.files['archivo']
+        if file and file.filename.endswith(('.xls', '.xlsx')):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+
+            X, df_original = procesar_excel(filepath)
+            model, scaler = cargar_modelo()
+
+            X_scaled = scaler.transform(X)
+            y_pred = model.predict(X_scaled)
+
+            df_original['prediccion'] = y_pred
+            datos = df_original.to_dict(orient='records')
+
+            # Guardar el DataFrame a Excel y CSV
+            df_original.to_excel(os.path.join(app.config['UPLOAD_FOLDER'], 'resultados_prediccion.xlsx'), index=False)
+            df_original.to_csv(os.path.join(app.config['UPLOAD_FOLDER'], 'resultados_prediccion.csv'), index=False)
+
+    return render_template("prediccion_diabetes.html", datos=datos)
+
+@app.route('/descargar_excel/')
+def descargar_excel():
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'resultados_prediccion.xlsx')
+    return send_file(filepath, as_attachment=True)
+
+@app.route('/descargar_csv/')
+def descargar_csv():
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'resultados_prediccion.csv')
+    return send_file(filepath, as_attachment=True)
