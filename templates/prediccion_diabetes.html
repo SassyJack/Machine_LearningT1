@@ -1,0 +1,195 @@
+{% extends 'layout.html' %}
+
+{% block title %}Predicción de Diabetes con XGBoost{% endblock %}
+
+{% block content %}
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                background-color: #f4f4f9;
+                margin: 0;
+                padding: 0;
+            }
+
+            h1 {
+                color: #333;
+                text-align: center;
+                margin-top: 30px;
+            }
+
+            table {
+                width: 80%;
+                margin: 40px auto;
+                border-collapse: collapse;
+                background-color: white;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            th, td {
+                padding: 15px;
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+            }
+
+            th {
+                background-color: #4CAF50;
+                color: white;
+                font-size: 18px;
+            }
+
+            td {
+                color: #555;
+                font-size: 16px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            tr:hover {
+                background-color: #f1f1f1;
+            }
+
+            strong {
+                font-size: 16px;
+                padding: 5px;
+                border-radius: 5px;
+            }
+
+            .diabetes {
+                background-color: #f44336;
+                color: white;
+            }
+
+            .no-diabetes {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            .btn {
+                background-color: #007BFF;
+                color: white;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 5px;
+                margin: 10px;
+                font-size: 16px;
+            }
+
+            .btn:hover {
+                background-color: #0056b3;
+            }
+
+            .container {
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+    /* Estilo para el encabezado h1 */
+    h1 {
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        text-align: center;
+        font-size: 36px;
+        margin-top: 50px;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #83c786;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Estilo para el formulario */
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    form input[type="file"] {
+        margin-bottom: 20px;
+        padding: 12px;
+        font-size: 16px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        width: 80%;
+        background-color: #f9f9f9;
+        transition: border 0.3s ease;
+    }
+
+    form input[type="file"]:hover {
+        border-color: #4CAF50;
+    }
+
+    form button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 50%;
+    }
+
+    form button:hover {
+        background-color: #45a049;
+    }
+        </style>
+
+    <div class="container">
+        <h1>Subir archivo de Excel - Predicción de Diabetes</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="archivo" accept=".xls,.xlsx" required>
+            <button type="submit">Cargar y Predecir</button>
+        </form>
+
+        {% if datos %}
+            <h2>Resultados de la Predicción</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Glucosa</th>
+                        <th>Edad</th>
+                        <th>IMC</th>
+                        <th>Predicción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fila in datos %}
+                        <tr>
+                            <td>{{ fila.glucosa }}</td>
+                            <td>{{ fila.edad }}</td>
+                            <td>{{ fila.IMC }}</td>
+                            <td>
+                                {% if fila.prediccion == 1 %}
+                                    <strong class="diabetes">Diabetes</strong>
+                                {% else %}
+                                    <strong class="no-diabetes">No Diabetes</strong>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Botones para exportar los resultados -->
+            <div style="text-align:center;">
+                <a href="{{ url_for('descargar_excel') }}" class="btn">Descargar Excel</a>
+                <a href="{{ url_for('descargar_csv') }}" class="btn">Descargar CSV</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
