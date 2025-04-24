@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import joblib
 
-# Entrenamiento del modelo (esto puede ejecutarse una vez)
+
 def entrenar_modelo():
     df = pd.read_excel("dataset_diabetes.xlsx")
     X = df[['glucosa', 'edad', 'IMC']]

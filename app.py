@@ -3,7 +3,7 @@ from pyexpat import model
 import re
 from flask import Flask, render_template, request
 import numpy as np
-import RegresionLin
+from RegresionLin import generate_plot, calculate_prediction
 import RegresionLog
 import Modelos
 from Modelos import obtener_modelo_por_id, obtener_modelos
@@ -45,11 +45,11 @@ def exampleHTML():
 
 @app.route("/RegresionLin/", methods=["GET", "POST"])
 def RegresionLin():
+    plot_url = generate_plot()
     prediction = None
     if request.method == 'POST':
         investment = float(request.form['investment'])
         prediction = RegresionLin.calculate_prediction(investment) 
-    plot_url = RegresionLin.generate_plot()
     return render_template('RegresionLin.html', prediction=prediction, plot_url=plot_url)
 
 @app.route("/RegresionLogHTML/")
